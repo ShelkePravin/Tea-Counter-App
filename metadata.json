@@ -1,0 +1,8 @@
+{
+  "name": "Tea Counter",
+  "description": "Daily tea consumption counter with offline local device storage and daily history tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
