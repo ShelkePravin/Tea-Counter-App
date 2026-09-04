@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stopColor="#b45309" />
+      <stop offset="100%" stopColor="#78350f" />
+    </linearGradient>
+    <linearGradient id="cupGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#ffffff" />
+      <stop offset="100%" stopColor="#f5f5f4" />
+    </linearGradient>
+    <linearGradient id="teaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stopColor="#f59e0b" />
+      <stop offset="100%" stopColor="#92400e" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle for App Icon -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Steam -->
+  <path d="M210 120 C 195 90, 225 60, 210 35" stroke="#fef3c7" stroke-width="14" stroke-linecap="round" fill="none" opacity="0.8" />
+  <path d="M256 110 C 240 80, 270 50, 256 25" stroke="#fef3c7" stroke-width="16" stroke-linecap="round" fill="none" opacity="0.9" />
+  <path d="M302 120 C 285 90, 315 60, 302 35" stroke="#fef3c7" stroke-width="14" stroke-linecap="round" fill="none" opacity="0.8" />
+
+  <!-- Saucer -->
+  <ellipse cx="256" cy="420" rx="180" ry="28" fill="#e7e5e4" />
+  <ellipse cx="256" cy="416" rx="140" ry="18" fill="#d6d3d1" />
+
+  <!-- Cup Handle -->
+  <path d="M340 210 C 440 210, 440 340, 330 350" fill="none" stroke="url(#cupGrad)" stroke-width="36" stroke-linecap="round" />
+
+  <!-- Cup Body -->
+  <path d="M140 180 L 165 370 C 170 405, 342 405, 347 370 L 372 180 Z" fill="url(#cupGrad)" />
+
+  <!-- Tea Surface -->
+  <ellipse cx="256" cy="180" rx="116" ry="26" fill="url(#teaGrad)" />
+  <ellipse cx="256" cy="180" rx="100" ry="18" fill="#d97706" opacity="0.5" />
+</svg>

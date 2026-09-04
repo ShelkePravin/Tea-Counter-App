@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Award,
   AlertTriangle,
+  Smartphone,
 } from 'lucide-react';
 
 interface SettingsModalProps {
@@ -24,6 +25,7 @@ interface SettingsModalProps {
   onRestoreData: (records: Record<string, DayRecord>, prefs: TeaPreferences) => void;
   onClearAllData: () => void;
   exportJsonFn: () => string;
+  onOpenInstallModal?: () => void;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -35,6 +37,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onRestoreData,
   onClearAllData,
   exportJsonFn,
+  onOpenInstallModal,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [importStatus, setImportStatus] = useState<string | null>(null);
@@ -243,6 +246,35 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               />
             </button>
           </div>
+
+          {/* Android APK & App Installation */}
+          {onOpenInstallModal && (
+            <div className="p-3.5 bg-linear-to-r from-amber-50 to-amber-100/60 border border-amber-200/90 rounded-xl space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-amber-800 text-amber-100 flex items-center justify-center">
+                    <Smartphone className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-amber-950">Install App / Download APK</div>
+                    <div className="text-[11px] text-amber-900/80">
+                      Save to phone home screen or generate .apk
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onOpenInstallModal();
+                  }}
+                  className="px-3 py-1.5 bg-amber-800 hover:bg-amber-900 text-white rounded-lg text-xs font-semibold cursor-pointer transition-colors shadow-2xs"
+                >
+                  Get APK
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Device Storage Status & Backup */}
           <div className="space-y-3 pt-2 border-t border-stone-200">

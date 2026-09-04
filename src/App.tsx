@@ -24,6 +24,9 @@ import { InsightsView } from './components/InsightsView';
 import { QuickAddModal } from './components/QuickAddModal';
 import { EditCountModal } from './components/EditCountModal';
 import { SettingsModal } from './components/SettingsModal';
+import { InstallModal } from './components/InstallModal';
+import { SplashScreen } from './components/SplashScreen';
+import { usePWAInstall } from './hooks/usePWAInstall';
 import {
   Coffee,
   Calendar,
@@ -31,6 +34,7 @@ import {
   Settings,
   HardDrive,
   CheckCircle,
+  Smartphone,
 } from 'lucide-react';
 
 export default function App() {
@@ -42,7 +46,11 @@ export default function App() {
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const [isEditCountOpen, setIsEditCountOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isInstallOpen, setIsInstallOpen] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [modalTargetDate, setModalTargetDate] = useState<string>(getTodayDateString());
+
+  const { isInstallable, isInstalled, install } = usePWAInstall();
 
   // Listen to midnight day changes
   useEffect(() => {
@@ -160,6 +168,18 @@ export default function App() {
 
           <div className="flex items-center gap-1.5">
             <button
+              id="open-install-top-btn"
+              type="button"
+              onClick={() => setIsInstallOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+              title="Get APK & Phone Install"
+              aria-label="Get APK and Phone Install"
+            >
+              <Smartphone className="w-3.5 h-3.5 text-amber-800" />
+              <span>{isInstalled ? 'App Ready' : 'Get APK'}</span>
+            </button>
+
+            <button
               id="open-settings-top-btn"
               type="button"
               onClick={() => setIsSettingsOpen(true)}
@@ -267,13 +287,26 @@ export default function App() {
             <HardDrive className="w-3.5 h-3.5 text-stone-400" />
             <span>Saved in device storage (Offline)</span>
           </div>
-          <button
-            type="button"
-            onClick={() => setIsSettingsOpen(true)}
-            className="text-amber-800 hover:underline font-semibold cursor-pointer"
-          >
-            Backup / Settings
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              id="footer-get-apk-btn"
+              type="button"
+              onClick={() => setIsInstallOpen(true)}
+              className="text-amber-800 hover:underline font-semibold cursor-pointer flex items-center gap-1"
+            >
+              <Smartphone className="w-3 h-3" />
+              <span>Get APK</span>
+            </button>
+            <span>•</span>
+            <button
+              id="footer-settings-btn"
+              type="button"
+              onClick={() => setIsSettingsOpen(true)}
+              className="text-stone-600 hover:text-stone-900 hover:underline font-medium cursor-pointer"
+            >
+              Settings
+            </button>
+          </div>
         </footer>
 
         {/* Modals */}
@@ -303,7 +336,25 @@ export default function App() {
           onRestoreData={handleRestoreData}
           onClearAllData={handleClearAllData}
           exportJsonFn={() => exportLocalDataJson(records, preferences)}
+          onOpenInstallModal={() => setIsInstallOpen(true)}
         />
+
+        <InstallModal
+          isOpen={isInstallOpen}
+          onClose={() => setIsInstallOpen(false)}
+          isInstallable={isInstallable}
+          isInstalled={isInstalled}
+          onInstall={install}
+        />
+
+        {/* Startup Native Splash Screen */}
+        {showSplash && (
+          <SplashScreen
+            appName="Tea Counter"
+            subtitle="Daily Chai & Tea Tracker"
+            onComplete={() => setShowSplash(false)}
+          />
+        )}
       </div>
     </div>
   );
