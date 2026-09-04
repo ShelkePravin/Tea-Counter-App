@@ -31,7 +31,8 @@ export const InstallModal: React.FC<InstallModalProps> = ({
 
   if (!isOpen) return null;
 
-  const currentAppUrl = window.location.origin;
+  // Use the public shared URL (ais-pre) so external bots like PWABuilder are not blocked by Google Sign-In
+  const currentAppUrl = window.location.origin.replace('ais-dev-', 'ais-pre-');
 
   const handleCopyUrl = async () => {
     try {
@@ -210,57 +211,29 @@ export const InstallModal: React.FC<InstallModalProps> = ({
 
           {activeTab === 'pwabuilder' && (
             <div className="space-y-3.5">
-              <div className="bg-blue-50 border border-blue-200/80 rounded-xl p-3.5">
-                <p className="font-semibold text-blue-950 text-xs">
-                  Generate a Standalone .APK File (Free & Instant)
+              <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-3.5">
+                <p className="font-semibold text-amber-950 text-xs">
+                  Important: Create Public Share Link First
                 </p>
-                <p className="text-[11px] text-blue-900/80 mt-1">
-                  Because Tea Counter is built with full PWA manifests and icons, Microsoft &
-                  Google's <strong>PWABuilder</strong> can wrap this app into a signed Android{' '}
-                  <strong>.apk</strong> or <strong>.aab</strong> package in 1 minute.
+                <p className="text-[11px] text-amber-900/90 mt-1 leading-relaxed">
+                  Before PWABuilder can scan your app, you must click the <strong>Share</strong> button at the top right of AI Studio to publish it. Otherwise, external bots get a 404 or login screen.
                 </p>
               </div>
 
               <div className="border border-stone-200 rounded-xl p-3.5 space-y-2.5 bg-stone-50/60">
-                <p className="font-semibold text-stone-900">3 Easy Steps to download the .apk:</p>
+                <p className="font-semibold text-stone-900">How to use PWABuilder:</p>
                 <ol className="list-decimal list-inside space-y-2 text-[11px] text-stone-600">
                   <li>
-                    Copy this app URL:
-                    <div className="mt-1 flex items-center gap-2">
-                      <input
-                        type="text"
-                        readOnly
-                        value={currentAppUrl}
-                        className="flex-1 bg-white border border-stone-300 rounded-lg px-2 py-1 text-[11px] text-stone-800 font-mono"
-                      />
-                      <button
-                        type="button"
-                        onClick={handleCopyUrl}
-                        className="px-2.5 py-1 bg-stone-200 hover:bg-stone-300 text-stone-800 rounded-md font-medium text-[10px]"
-                      >
-                        {copied ? 'Copied!' : 'Copy'}
-                      </button>
-                    </div>
+                    Click <strong>Share</strong> in AI Studio (top right) to make the link public.
                   </li>
                   <li>
-                    Open <strong>pwabuilder.com</strong> and paste the URL into the input field.
+                    Copy your public shared link.
                   </li>
                   <li>
-                    Click <strong>Package for Android</strong> and download your generated{' '}
-                    <strong>.apk</strong> file directly to your phone!
+                    Go to <strong>pwabuilder.com</strong>, paste the link, and click <strong>Package for Android</strong> to download your signed <strong>.apk</strong>!
                   </li>
                 </ol>
               </div>
-
-              <a
-                href={`https://www.pwabuilder.com/?url=${encodeURIComponent(currentAppUrl)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2.5 px-4 bg-amber-800 hover:bg-amber-900 text-white font-medium rounded-xl flex items-center justify-center gap-2 shadow-xs transition-colors text-xs"
-              >
-                <span>Open PWABuilder to Generate APK</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
             </div>
           )}
 

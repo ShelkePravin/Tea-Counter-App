@@ -1,5 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import fs from 'fs';
 import path from 'path';
 import {defineConfig} from 'vite';
 import {VitePWA} from 'vite-plugin-pwa';
@@ -9,6 +10,38 @@ export default defineConfig(() => {
     plugins: [
       react(),
       tailwindcss(),
+      {
+        name: 'serve-pwa-static',
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            const url = req.url ? req.url.split('?')[0] : '';
+            if (url === '/manifest.json' || url === '/manifest.webmanifest') {
+              try {
+                const manifest = fs.readFileSync(path.resolve('public/manifest.json'), 'utf-8');
+                res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.statusCode = 200;
+                return res.end(manifest);
+              } catch (e) {
+                next();
+              }
+            } else if (url === '/sw.js') {
+              try {
+                const sw = fs.readFileSync(path.resolve('public/sw.js'), 'utf-8');
+                res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Service-Worker-Allowed', '/');
+                res.statusCode = 200;
+                return res.end(sw);
+              } catch (e) {
+                next();
+              }
+            } else {
+              next();
+            }
+          });
+        },
+      },
       VitePWA({
         registerType: 'autoUpdate',
         includeAssets: ['icon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
